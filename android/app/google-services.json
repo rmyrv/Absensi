@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "692446825080",
+    "firebase_url": "https://rfidwemosdb-default-rtdb.firebaseio.com",
+    "project_id": "rfidwemosdb",
+    "storage_bucket": "rfidwemosdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692446825080:android:ebdf7f9c29a2b36ddcbb8d",
+        "android_client_info": {
+          "package_name": "com.example.projectabsensi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1QUCEk7dB0tAgcxmrWyZdKVC4nzxd0qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
