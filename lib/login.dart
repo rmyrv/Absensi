@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Jika sesuai, pindah ke halaman Dashboard
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DashboardScreen()),
+                    MaterialPageRoute(builder: (context) => dashboardscreen()),
                   );
                 } else {
                   // Jika tidak sesuai, tampilkan pesan kesalahan atau ambil tindakan lainnya
