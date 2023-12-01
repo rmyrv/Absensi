@@ -2,10 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-void main() async {
+import 'dashboard.dart';
+
+void main() {
+  initializeApp();
+}
+
+void initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeDateFormatting('id_ID', null);
+
   try {
     print('Before initializing Firebase');
     await Firebase.initializeApp(
@@ -22,57 +29,76 @@ void main() async {
     runApp(const MyApp());
   } catch (e) {
     print(e.toString());
-    runApp(MyAppNotConnected(errorMessage: e.toString()));
-  }
-}
-
-class MyAppNotConnected extends StatelessWidget {
-  final String errorMessage;
-
-  const MyAppNotConnected({Key? key, required this.errorMessage})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    print('Firebase Initialization Error: $errorMessage');
-
-    return MaterialApp(
-      title: 'My App (Not Connected)',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Not Connected to Firebase'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Firebase is not available. Check your connection.'),
-              const SizedBox(height: 10),
-              Text('Error: $errorMessage'),
-            ],
-          ),
-        ),
-      ),
-    );
+    runApp(MyApp(errorMessage: e.toString()));
   }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, this.errorMessage}) : super(key: key);
+
+  final String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My App'),
-        ),
-        body: const Center(
-          child: Text('Connected to Firebase!'),
-        ),
+      title: 'My Firebase App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: Dashboard(),
     );
   }
 }
+
+
+
+// class MyAppNotConnected extends StatelessWidget {
+//   final String errorMessage;
+
+//   const MyAppNotConnected({Key? key, required this.errorMessage})
+//       : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     print('Firebase Initialization Error: $errorMessage');
+
+//     return MaterialApp(
+//       title: 'My App (Not Connected)',
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: const Text('Not Connected to Firebase'),
+//         ),
+//         body: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               const Text('Firebase is not available. Check your connection.'),
+//               const SizedBox(height: 10),
+//               Text('Error: $errorMessage'),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       debugShowCheckedModeBanner: false,
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: const Text('My App'),
+//         ),
+//         body: const Center(
+//           child: Text('Connected to Firebase!'),
+//         ),
+//       ),
+//     );
+//   }
+// }
