@@ -1,114 +1,44 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'My App',
-//       home: Dashboard(),
-//     );
-//   }
-// }
-
-// class Dashboard extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Color(0xFFAB8C5F),
-//         leading: PopupMenuButton<String>(
-//           itemBuilder: (BuildContext context) {
-//             return [
-//               PopupMenuItem<String>(
-//                 value: 'logout',
-//                 child: ListTile(
-//                   leading: Icon(Icons.exit_to_app),
-//                   title: Text('Logout'),
-//                 ),
-//               ),
-//             ];
-//           },
-//           onSelected: (value) {
-//             if (value == 'logout') {
-//               // Tambahkan logika logout di sini
-//               // Misalnya, panggil fungsi untuk menghapus token, membersihkan sesi, dll.
-//               // Setelah logout, arahkan pengguna ke layar login atau halaman lainnya.
-//             }
-//           },
-//         ),
-//         title: Center(
-//           child: Image.asset(
-//             'assets/absensi.png',
-//             height: 100,
-//           ),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             buildStyledTableRow('Nama', ['User', 'id']),
-//             buildStyledTableRow('UID', ['Unique ID', 'id']),
-//             buildStyledTableRow('Waktu', ['Date', 'Time']),
-//             // Tambahkan dua tabel lainnya dengan cara yang serupa
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-//         return Table(
-//           border: TableBorder.all(),
-//           defaultVerticalAlignment:
-//               TableCellVerticalAlignment.middle, // Tambahkan ini
-//           children: [
-//             TableRow(
-//               children: columns
-//                   .map(
-//                     (column) => TableCell(
-//                       child: Padding(
-//                         padding: const EdgeInsets.all(8.0),
-//                         child: Text(column),
-//                       ),
-//                     ),
-//                   )
-//                   .toList(),
-//             ),
-//             ...data!
-//                 .map(
-//                   (doc) => TableRow(
-//                     children: columns
-//                         .map(
-//                           (col) => TableCell(
-//                             child: Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               child: Text(doc[col] ?? ''),
-//                             ),
-//                           ),
-//                         )
-//                         .toList(),
-//                   ),
-//                 )
-//                 .toList(),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() {
+  initializeApp();
+}
+
+void initializeApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('id_ID', null);
+
+  try {
+    print('Before initializing Firebase');
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyAuPr62WJDEHIRIsA7QE_fXHrUKLRoXkOU",
+        appId: "1:692446825080:android:ebdf7f9c29a2b36ddcbb8d",
+        messagingSenderId: "692446825080",
+        projectId: "rfidwemosdb", // Remove trailing space
+        storageBucket: "rfidwemosdb.appspot.com",
+        databaseURL: "https://rfidwemosdb-default-rtdb.firebaseio.com/",
+      ),
+    );
+    print('Firebase initialized successfully');
+    runApp(const DatabaseReadExample());
+  } catch (e) {
+    print(e.toString());
+    runApp(DatabaseReadExample(errorMessage: e.toString()));
+  }
+}
 
 class DatabaseReadExample extends StatefulWidget {
   @override
+  const DatabaseReadExample({Key? key, this.errorMessage}) : super(key: key);
+
+  final String? errorMessage;
   _DatabaseReadExampleState createState() => _DatabaseReadExampleState();
 }
 
@@ -213,10 +143,4 @@ class _DatabaseReadExampleState extends State<DatabaseReadExample> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: DatabaseReadExample(),
-  ));
 }

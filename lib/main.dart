@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
-import 'dashboard.dart';
+import 'package:projectabsensi/login.dart';
 
 void main() {
   initializeApp();
@@ -16,7 +15,7 @@ void initializeApp() async {
   try {
     print('Before initializing Firebase');
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
         apiKey: "AIzaSyAuPr62WJDEHIRIsA7QE_fXHrUKLRoXkOU",
         appId: "1:692446825080:android:ebdf7f9c29a2b36ddcbb8d",
         messagingSenderId: "692446825080",
@@ -41,11 +40,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Firebase App',
+      title: 'RFID ABSENSI APP',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: DatabaseReadExample(),
+      home: LoginPage(),
     );
   }
 }
