@@ -1,117 +1,222 @@
-// import 'package:projectabsensi/login.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text(
-//             "Absensi",
-//             style: TextStyle(
-//               fontSize: 20.0,
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//           centerTitle: true,
-//         ),
-//         drawer: Drawer(
-//           child: ListView(
-//             children: [
-//               UserAccountsDrawerHeader(
-//                 accountName: Text("Nama Pengguna"),
-//                 accountEmail: Text("email@example.com"),
-//                 currentAccountPicture: CircleAvatar(
-//                   backgroundImage: AssetImage("path_to_your_profile_image.jpg"),
-//                 ),
-//               ),
-//               ListTile(
-//                 title: Text("Logout"),
-//                 onTap: () {
-//                   // Aksi yang akan diambil saat tombol "Logout" ditekan
-//                   Navigator.pushAndRemoveUntil(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => LoginPage()),
-//                     (Route<dynamic> route) => false,
-//                   );
-//                 },
-//               ),
-//             ],
-//           ),
-//         ),
-//         body: FutureBuilder(
-//             future: fetchData(),
-//             builder: (context, snapshot) {
-//               return ListView(
-//                 children: [
-//                   Center(
-//                     child: DataTable(
-//                       columns: [
-//                         DataColumn(label: Text('Nama')),
-//                         DataColumn(label: Text('Hari')),
-//                         DataColumn(label: Text('Jam Masuk')),
-//                         DataColumn(label: Text('Jam Keluar')),
-//                       ],
-//                       rows: [
-//                         DataRow(cells: [
-//                           DataCell(Text('$_namaValue')),
-//                           DataCell(Text('Senin')),
-//                           DataCell(Text('08:00')),
-//                           DataCell(Text('17:00')),
-//                         ]),
-//                         DataRow(cells: [
-//                           DataCell(Text('Jane Smith')),
-//                           DataCell(Text('Selasa')),
-//                           DataCell(Text('09:00')),
-//                           DataCell(Text('18:00')),
-//                         ]),
-//                         // Tambahkan baris lain sesuai kebutuhan
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               );
-//             }));
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'My App',
+//       home: Dashboard(),
+//     );
 //   }
 // }
 
-class Dashboard extends StatelessWidget {
+// class Dashboard extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Color(0xFFAB8C5F),
+//         leading: PopupMenuButton<String>(
+//           itemBuilder: (BuildContext context) {
+//             return [
+//               PopupMenuItem<String>(
+//                 value: 'logout',
+//                 child: ListTile(
+//                   leading: Icon(Icons.exit_to_app),
+//                   title: Text('Logout'),
+//                 ),
+//               ),
+//             ];
+//           },
+//           onSelected: (value) {
+//             if (value == 'logout') {
+//               // Tambahkan logika logout di sini
+//               // Misalnya, panggil fungsi untuk menghapus token, membersihkan sesi, dll.
+//               // Setelah logout, arahkan pengguna ke layar login atau halaman lainnya.
+//             }
+//           },
+//         ),
+//         title: Center(
+//           child: Image.asset(
+//             'assets/absensi.png',
+//             height: 100,
+//           ),
+//         ),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Column(
+//           children: [
+//             buildStyledTableRow('Nama', ['User', 'id']),
+//             buildStyledTableRow('UID', ['Unique ID', 'id']),
+//             buildStyledTableRow('Waktu', ['Date', 'Time']),
+//             // Tambahkan dua tabel lainnya dengan cara yang serupa
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
+//         return Table(
+//           border: TableBorder.all(),
+//           defaultVerticalAlignment:
+//               TableCellVerticalAlignment.middle, // Tambahkan ini
+//           children: [
+//             TableRow(
+//               children: columns
+//                   .map(
+//                     (column) => TableCell(
+//                       child: Padding(
+//                         padding: const EdgeInsets.all(8.0),
+//                         child: Text(column),
+//                       ),
+//                     ),
+//                   )
+//                   .toList(),
+//             ),
+//             ...data!
+//                 .map(
+//                   (doc) => TableRow(
+//                     children: columns
+//                         .map(
+//                           (col) => TableCell(
+//                             child: Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Text(doc[col] ?? ''),
+//                             ),
+//                           ),
+//                         )
+//                         .toList(),
+//                   ),
+//                 )
+//                 .toList(),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+
+class DatabaseReadExample extends StatefulWidget {
+  @override
+  _DatabaseReadExampleState createState() => _DatabaseReadExampleState();
+}
+
+class _DatabaseReadExampleState extends State<DatabaseReadExample> {
+  final DatabaseReference _namaRef = FirebaseDatabase.instance
+      .reference()
+      .child('users')
+      .child('UID')
+      .child('Nama');
+  final DatabaseReference _prodiRef = FirebaseDatabase.instance
+      .reference()
+      .child('users')
+      .child('UID')
+      .child('Prodi');
+  final DatabaseReference _waktuRef = FirebaseDatabase.instance
+      .reference()
+      .child('users')
+      .child('UID')
+      .child('Waktu');
+
+  String _nama = 'Loading...';
+  String _prodi = 'Loading...';
+  String _waktu = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Mendengarkan perubahan data di database untuk Nama
+    _namaRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          _nama = event.snapshot.value.toString();
+        });
+      }
+    });
+
+    // Mendengarkan perubahan data di database untuk Prodi
+    _prodiRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          _prodi = event.snapshot.value.toString();
+        });
+      }
+    });
+
+    // Mendengarkan perubahan data di database untuk Waktu
+    _waktuRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          _waktu = event.snapshot.value.toString();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Absensi'),
+        title: Text('Database Read Example'),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Nama: $_nama'),
+            Text('Prodi: $_prodi'),
+            Text('Waktu: $_waktu'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Membaca data kembali (contoh penggunaan)
+                _namaRef.once().then((DataSnapshot snapshot) {
+                      if (snapshot.value != null) {
+                        setState(() {
+                          _nama = snapshot.value.toString();
+                        });
+                      }
+                    } as FutureOr Function(DatabaseEvent value));
 
-          var data = snapshot.data?.docs;
+                _prodiRef.once().then((DataSnapshot snapshot) {
+                      if (snapshot.value != null) {
+                        setState(() {
+                          _prodi = snapshot.value.toString();
+                        });
+                      }
+                    } as FutureOr Function(DatabaseEvent value));
 
-          return DataTable(
-            columns: [
-              DataColumn(label: Text('dhgsadhgasdna')),
-              DataColumn(label: Text('fssdsfdafdsd')),
-              // tambahkan DataColumn lain sesuai kebutuhan
-            ],
-            rows: data!
-                .map(
-                  (doc) => DataRow(
-                    cells: [
-                      DataCell(Text(doc['UID'])),
-                      DataCell(Text(doc['dates'])),
-                      // tambahkan DataCell lain sesuai kebutuhan
-                    ],
-                  ),
-                )
-                .toList(),
-          );
-        },
+                _waktuRef.once().then((DataSnapshot snapshot) {
+                      if (snapshot.value != null) {
+                        setState(() {
+                          _waktu = snapshot.value.toString();
+                        });
+                      }
+                    } as FutureOr Function(DatabaseEvent value));
+              },
+              child: Text('Baca Ulang Data'),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: DatabaseReadExample(),
+  ));
 }

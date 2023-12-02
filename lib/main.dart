@@ -45,60 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Dashboard(),
+      home: DatabaseReadExample(),
     );
   }
 }
-
-
-
-// class MyAppNotConnected extends StatelessWidget {
-//   final String errorMessage;
-
-//   const MyAppNotConnected({Key? key, required this.errorMessage})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     print('Firebase Initialization Error: $errorMessage');
-
-//     return MaterialApp(
-//       title: 'My App (Not Connected)',
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Not Connected to Firebase'),
-//         ),
-//         body: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               const Text('Firebase is not available. Check your connection.'),
-//               const SizedBox(height: 10),
-//               Text('Error: $errorMessage'),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('My App'),
-//         ),
-//         body: const Center(
-//           child: Text('Connected to Firebase!'),
-//         ),
-//       ),
-//     );
-//   }
-// }
